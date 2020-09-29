@@ -605,7 +605,7 @@ BlockPartition_TMLA <- function(evnVariables = NULL,
   colnames(FinalResult) <- c("sp", "x", "y", "Partition", "PresAbse")
   utils::write.table(
     FinalResult,
-    paste(DirSave, "OccBlocks.txt", sep = "\\"),
+    paste(DirSave, "OccBlocks.txt", sep = "/"),
     sep = "\t",
     row.names = F
   )
