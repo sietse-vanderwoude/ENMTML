@@ -224,7 +224,7 @@ BandsPartition_TMLA <- function(evnVariables = NULL,
     msk[msk[] == 0] <-  NA      #ASC with the ODD-EVEN quadrants
     writeRaster(
       msk,
-      paste(DirSave, paste(names(RecordsData)[x], ".tif", sep = ""), sep = "\\"),
+      paste(DirSave, paste(names(RecordsData)[x], ".tif", sep = ""), sep = "/"),
       format = "GTiff",
       NAflag = -9999,
       overwrite = T
@@ -573,13 +573,13 @@ BandsPartition_TMLA <- function(evnVariables = NULL,
 
   utils::write.table(
     FinalInfoGrid,
-    paste(DirSave, "BestPartitions.txt", sep = "\\"),
+    paste(DirSave, "BestPartitions.txt", sep = "/"),
     sep = "\t",
     row.names = F
   )
   utils::write.table(
     FinalResult,
-    paste(DirSave, "OccBands.txt", sep = "\\"),
+    paste(DirSave, "OccBands.txt", sep = "/"),
     sep = "\t",
     row.names = F
   )
