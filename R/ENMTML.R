@@ -502,7 +502,7 @@ ENMTML <- function(pred_dir,
   }
 
   if(any(env == c('asc', 'bil', 'tif'))){
-    envT<-raster::stack(list.files(pred_dir,pattern=paste0('\\.',env,'$'),full.names = T))
+    envT<-raster::stack(list.files(pred_dir,pattern=paste0('/.',env,'$'),full.names = T))
     try(envT <- raster::brick(envT))
     if(class(envT)=="RasterBrick"){
       cat("RasterBrick successfully created!\n")
@@ -511,7 +511,7 @@ ENMTML <- function(pred_dir,
     }
   }
   if(env == 'txt'){
-    envT<-utils::read.table(list.files(pred_dir,pattern='\\.txt$',full.names = T),h=T)
+    envT<-utils::read.table(list.files(pred_dir,pattern='/.txt$',full.names = T),h=T)
     sp::gridded(envT)<- ~x+y
     envT<-raster::stack(envT)
     try(envT <- raster::brick(envT))
@@ -638,11 +638,11 @@ ENMTML <- function(pred_dir,
           if(any(ProjT == c('asc', 'bil', 'tif'))){
             EnvF[[i]] <-
               raster::brick(raster::stack(file.path(
-                Pfol[i], list.files(Pfol[i], pattern = paste0('\\.', ProjT, '$'))
+                Pfol[i], list.files(Pfol[i], pattern = paste0('/.', ProjT, '$'))
               )))
           }
           if(ProjT == 'txt'){
-            ProjTT<-utils::read.table(file.path(Pfol[i],list.files(Pfol[i],pattern='\\.txt$'),h=T))
+            ProjTT<-utils::read.table(file.path(Pfol[i],list.files(Pfol[i],pattern='/.txt$'),h=T))
             sp::gridded(ProjTT)<- ~x+y
             EnvF[[i]]<-raster::brick(raster::stack(ProjTT))
             rm(ProjTT)
@@ -668,13 +668,13 @@ ENMTML <- function(pred_dir,
         if (any(ProjT == c('asc', 'bil', 'tif'))) {
           EnvF[[i]] <-
             raster::brick(raster::stack(file.path(
-              Pfol[i], list.files(Pfol[i], pattern = paste0('\\.', ProjT, '$'))
+              Pfol[i], list.files(Pfol[i], pattern = paste0('/.', ProjT, '$'))
             )))
           EnvF[[i]] <- synchroniseNA(EnvF[[i]])
         }
         if (ProjT == 'txt') {
           ProjTT <-
-            utils::read.table(file.path(Pfol[i], list.files(Pfol[i], pattern = '\\.txt$'), h =
+            utils::read.table(file.path(Pfol[i], list.files(Pfol[i], pattern = '/.txt$'), h =
                                    T))
           sp::gridded(ProjTT) <- ~ x + y
           EnvF[[i]] <- raster::brick(raster::stack(ProjTT))
@@ -1497,7 +1497,7 @@ ENMTML <- function(pred_dir,
             SpMask <- raster::raster(file.path(DirM,paste0(names(occTR)[i],".tif")))
             SpMask <- pseudo.mask*SpMask
             if(sum(is.na(SpMask[])==F)<(pres_abs_ratio*nrow(occTR[[i]]))){
-              warning("The ammount of cells in the M restriction is insuficient to generate a 1:1 number of pseudo-absences")
+              warning("The amount of cells in the M restriction is insuficient to generate a 1:1 number of pseudo-absences")
               stop("Please try again with a smaller geographical buffer or without restricting the accessible area")
             }
             if(!is.null(eval_occ)){
