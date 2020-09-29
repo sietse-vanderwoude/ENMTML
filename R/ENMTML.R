@@ -502,7 +502,7 @@ ENMTML <- function(pred_dir,
   }
 
   if(any(env == c('asc', 'bil', 'tif'))){
-    envT<-raster::stack(list.files(pred_dir,pattern=paste0('/.',env,'$'),full.names = T))
+    envT<-raster::stack(list.files(pred_dir,pattern=paste0('\\.',env,'$'),full.names = T))
     try(envT <- raster::brick(envT))
     if(class(envT)=="RasterBrick"){
       cat("RasterBrick successfully created!\n")
@@ -511,7 +511,7 @@ ENMTML <- function(pred_dir,
     }
   }
   if(env == 'txt'){
-    envT<-utils::read.table(list.files(pred_dir,pattern='/.txt$',full.names = T),h=T)
+    envT<-utils::read.table(list.files(pred_dir,pattern='\\.txt$',full.names = T),h=T)
     sp::gridded(envT)<- ~x+y
     envT<-raster::stack(envT)
     try(envT <- raster::brick(envT))
@@ -638,11 +638,11 @@ ENMTML <- function(pred_dir,
           if(any(ProjT == c('asc', 'bil', 'tif'))){
             EnvF[[i]] <-
               raster::brick(raster::stack(file.path(
-                Pfol[i], list.files(Pfol[i], pattern = paste0('/.', ProjT, '$'))
+                Pfol[i], list.files(Pfol[i], pattern = paste0('\\.', ProjT, '$'))
               )))
           }
           if(ProjT == 'txt'){
-            ProjTT<-utils::read.table(file.path(Pfol[i],list.files(Pfol[i],pattern='/.txt$'),h=T))
+            ProjTT<-utils::read.table(file.path(Pfol[i],list.files(Pfol[i],pattern='\\.txt$'),h=T))
             sp::gridded(ProjTT)<- ~x+y
             EnvF[[i]]<-raster::brick(raster::stack(ProjTT))
             rm(ProjTT)
@@ -668,13 +668,13 @@ ENMTML <- function(pred_dir,
         if (any(ProjT == c('asc', 'bil', 'tif'))) {
           EnvF[[i]] <-
             raster::brick(raster::stack(file.path(
-              Pfol[i], list.files(Pfol[i], pattern = paste0('/.', ProjT, '$'))
+              Pfol[i], list.files(Pfol[i], pattern = paste0('\\.', ProjT, '$'))
             )))
           EnvF[[i]] <- synchroniseNA(EnvF[[i]])
         }
         if (ProjT == 'txt') {
           ProjTT <-
-            utils::read.table(file.path(Pfol[i], list.files(Pfol[i], pattern = '/.txt$'), h =
+            utils::read.table(file.path(Pfol[i], list.files(Pfol[i], pattern = '\\.txt$'), h =
                                    T))
           sp::gridded(ProjTT) <- ~ x + y
           EnvF[[i]] <- raster::brick(raster::stack(ProjTT))
