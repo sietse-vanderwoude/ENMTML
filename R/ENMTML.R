@@ -465,15 +465,24 @@ ENMTML <- function(pred_dir,
     if(!(msdm['method']%in%c('XY','MIN','CML','KER', 'OBR', 'LR', 'PRES', 'MCP', 'MCP-B'))){
       stop("'msdm' Argument is not valid!(XY/MIN/CML/KER/OBR/LR/PRES/MCP/MCP-B)")
     }
-    if(length(msdm)==2){
-      msdm_width <- as.numeric(msdm['width'])
+    
+    if(length(msdm)>1){
+      if(any(names(msdm)=='width')){
+        msdm_width <- as.numeric(msdm['width'])
+      }else{
+        stop("More than one M-SDM method chosen: Please select a SINGLE M-SDM method")
+      }
     }else{
       msdm_width <- NULL
+    }
+    
+    if(any((msdm['method']%in%c('XY','MIN','CML','KER'))) & !is.null(proj_dir)){
+      stop("It is not yet possible to combine priori M-SDMs with Projections!\nPlease remove the priori M-SDM or set the projection argument to NULL")
     }
   }
 
   if(!is.null(sp_accessible_area)){
-    if(!(sp_accessible_area['method']%in%c('BUFFER','MASK','USER-DEFINED','KER', 'OBR', 'LR', 'PRES', 'MCP', 'MCP-B'))){
+    if(!(sp_accessible_area['method']%in%c('BUFFER','MASK','USER-DEFINED'))){
       stop("'sp_accessible_area' Argument is not valid!(BUFFER/MASK/USER-DEFINED)")
     }
     if(sp_accessible_area['method']=="USER-DEFINED"&length(sp_accessible_area)!=2){
@@ -703,7 +712,7 @@ ENMTML <- function(pred_dir,
   if(is.null(result_dir)){
     DirR <- file.path(dirname(pred_dir),"Result")
     if (file.exists(DirR)){
-      warning("Result folder already exists,files may be overwritten!")
+      warning("Result folder already exists, files may be overwritten!")
     }else{
       dir.create(DirR)
     }
@@ -712,13 +721,13 @@ ENMTML <- function(pred_dir,
     if (!grepl('/', DirR)){
       message("Folder with results will be created at the same level of the predictors' folder")
       if (file.exists(file.path(dirname(pred_dir),DirR))){
-        message("Result folder already exists,files may be overwritten!")
+        message("Result folder already exists, files may be overwritten!")
       }
       DirR <- file.path(dirname(pred_dir),result_dir)
       dir.create(DirR)
     }else{
       if (file.exists(DirR)){
-        message("Result folder already exists,files may be overwritten!")
+        message("Result folder already exists, files may be overwritten!")
       }
       dir.create(DirR)
     }
@@ -741,7 +750,7 @@ ENMTML <- function(pred_dir,
   #4.1.Unique Occurrences----
   occA<-Occ_Unicas_TMLA(env=envT[[1]], occ.xy=occ_xy, DirO=DirR)
 
-  #4.2.Thining----
+  #4.2.Thinning----
   if(!is.null(thin_occ)){
     cat("Thinning occurrences...\n")
     if(thin_occ['method']%in%c('MORAN','CELLSIZE')){

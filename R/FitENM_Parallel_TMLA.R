@@ -122,7 +122,7 @@ FitENM_TMLA_Parallel <- function(RecordsData,
        names(RecordsDataM) <- spN
        rm(RecordsDataMt)
 
-       ab.0 <- foreach (i= 1:length(names(RecordsDataM)),.packages=c("dismo","raster","plyr"))%dopar%{
+       ab.0 <- foreach (i= 1:length(names(RecordsDataM)),.packages=c("dismo","raster","plyr"), .export = 'OptimRandomPoints')%dopar%{
         msk <- raster(paste(DirMask,paste(spN[i],".tif",sep=""),sep="/"))
          if(Part=="BOOT"||Part=="KFOLD"){
            NM <- 1
@@ -176,7 +176,7 @@ FitENM_TMLA_Parallel <- function(RecordsData,
       names(RecordsDataM) <- spN
       rm(RecordsDataMt)
 
-      ab.0 <- foreach (i=1:length(names(RecordsDataM)),.packages=c("dismo","raster","plyr"))%dopar%{
+      ab.0 <- foreach (i=1:length(names(RecordsDataM)),.packages=c("dismo","raster","plyr"), .export = 'OptimRandomPoints')%dopar%{
         msk <- Variables[[1]]
         msk[is.na(msk[])==FALSE] <- 1
 
@@ -1212,7 +1212,7 @@ FitENM_TMLA_Parallel <- function(RecordsData,
           #Future Projections
           if(is.null(Fut)==F){
             for(k in 1:length(VariablesP)){
-              PredRas <- PREDICT_ENFA(Model,brick(VariablesP[[k]]),PAtrainM[[1]])
+              PredRas <- PREDICT_ENFA(Model,VariablesP[[k]],PAtrainM[[1]])
               PredRas <- STANDAR_FUT(PredRas,FinalModelT)
               if(raster::minValue(PredRas)<0){
                 PredRas <- PredRas-raster::minValue(PredRas)
