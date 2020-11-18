@@ -86,6 +86,7 @@ M_delimited <- function(var,
                   dismo::circles(M_list[[i]], d = BufferDistanceKm[i], lonlat = T)
               }
               # M <- rgeos::gUnaryUnion(M@polygons)
+              proj4string(M@polygons) <- CRS("+proj=longlat +datum=WGS84 +no_defs +ellps=WGS84 +towgs84=0,0,0")
               Filter <- sp::over(varCord, M@polygons)
               M <- varCord$Cell[which(is.na(Filter))]
               M2 <- var
